@@ -2,6 +2,8 @@ package com.sd.mongodbaiagent.service;
 
 import com.sd.mongodbaiagent.mcp.tool.OrderSummaryTool;
 import com.sd.mongodbaiagent.model.Conversation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.messages.AssistantMessage;
 import org.springframework.ai.chat.messages.Message;
@@ -13,6 +15,8 @@ import java.util.List;
 @Service
 public class AgentService {
 
+    private static final Logger log =
+            LoggerFactory.getLogger(AgentService.class);
     private final ChatClient chatClient;
     private final ConversationService conversationService;
 
@@ -83,17 +87,24 @@ public class AgentService {
                 })
                 .toList();
 
-        // 4️⃣ Call AI with FULL HISTORY
-        String answer = chatClient.prompt()
-                .system(SYSTEM_PROMPT)
-                .messages(messages)
-                .call()
-                .content();
+        try {
+            // 4️⃣ Call AI with FULL HISTORY
+            String answer = chatClient.prompt()
+                    .system(SYSTEM_PROMPT)
+                    .messages(messages)
+                    .call()
+                    .content();
 
-        // 5️⃣ Store assistant reply
-        conversationService.addAssistantMessage(conversation, answer);
+            // 5️⃣ Store assistant reply
+            conversationService.addAssistantMessage(conversation, answer);
 
-        return answer;
+            return answer;
+
+        } catch (Exception ex) {
+            log.error("AI processing failed for conversationId={}", conversationId, ex);
+            return "Sorry, I ran into an internal error while processing your request. Please try again.";
+        }
     }
+
 }
 

@@ -27,13 +27,15 @@ public class OrderSummaryService {
     }
 
     public List<OrderSummary> getOrdersByStatus(String status) {
-        if (status == null) return null;
-        return summaryRepository.findByLastOrderStatusIgnoreCase(status);
+        if (status == null) return List.of();
+        List<OrderSummary> orders = summaryRepository.findByLastOrderStatusIgnoreCase(status);
+        return (orders == null || orders.isEmpty()) ? List.of() : orders;
     }
 
     public List<OrderSummary> getOrdersByStore(String storeId) {
-        if (storeId == null) return null;
-        return summaryRepository.findByStoreId(storeId);
+        if (storeId == null) return List.of();
+        List<OrderSummary> orders =  summaryRepository.findByStoreId(storeId);
+        return (orders == null || orders.isEmpty()) ? List.of() : orders;
     }
 
     public Optional<OrderSummary> getOrderById(String storeId) {
