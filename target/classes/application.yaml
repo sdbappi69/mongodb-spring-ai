@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: povsagent
+
+  data:
+    mongodb:
+      uri: ${MONGODB_CONNECTION_STRING}
+
+  ai:
+    openai:
+      api-key: ${OPENAI_API_KEY}
+      chat:
+        options:
+          model: gpt-4.1-nano
+          temperature: 0.1
+
+logging:
+  level:
+    org.springframework.data.mongodb: DEBUG
+    org.mongodb.driver: INFO
+    org.springframework.ai: DEBUG
