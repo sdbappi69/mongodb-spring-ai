@@ -16,7 +16,7 @@
 	<groupId>com.sd</groupId>
 	<artifactId>mongodb-ai-agent</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>povsagent</name>
+	<name>aiagent</name>
 	<description>POC project for POVS AI Agent</description>
 
 	<properties>

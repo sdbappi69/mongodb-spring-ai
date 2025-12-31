@@ -4,13 +4,15 @@ import com.sd.mongodbaiagent.model.Conversation;
 import com.sd.mongodbaiagent.model.Message;
 import com.sd.mongodbaiagent.repository.ConversationRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class ConversationService {
 
-    private static final int MAX_MESSAGES = 10;
+    @Value("${conversation.trim.max_messages:10}")
+    private int MAX_MESSAGES;
 
     private final ConversationRepository conversationRepository;
 

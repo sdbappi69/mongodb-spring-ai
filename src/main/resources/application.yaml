@@ -7,7 +7,7 @@ server:
 
 spring:
   application:
-    name: povsagent
+    name: aiagent
 
   data:
     mongodb:
