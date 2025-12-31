@@ -71,14 +71,11 @@ public class AgentService {
 
     public String ask(String conversationId, String userPrompt) {
 
-        // 1️⃣ Load or create conversation
         Conversation conversation =
                 conversationService.getOrCreate(conversationId);
 
-        // 2️⃣ Add user message to memory
         conversationService.addUserMessage(conversation, userPrompt);
 
-        // 3️⃣ Convert stored messages to Spring AI messages
         List<Message> messages = conversation.getMessages().stream()
                 .map(m -> (Message) switch (m.getRole()) {
                     case "user" -> new UserMessage(m.getContent());
@@ -88,14 +85,12 @@ public class AgentService {
                 .toList();
 
         try {
-            // 4️⃣ Call AI with FULL HISTORY
             String answer = chatClient.prompt()
                     .system(SYSTEM_PROMPT)
                     .messages(messages)
                     .call()
                     .content();
 
-            // 5️⃣ Store assistant reply
             conversationService.addAssistantMessage(conversation, answer);
 
             return answer;
