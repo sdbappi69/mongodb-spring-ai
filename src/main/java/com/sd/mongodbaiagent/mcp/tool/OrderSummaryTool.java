@@ -35,4 +35,13 @@ public class OrderSummaryTool {
     public Optional<OrderSummary> findOrderById(String storeId) {
         return orderSummaryService.getOrderById(storeId);
     }
+
+    @Tool(description = "Find orders by vendor name and order status")
+    public List<OrderSummary> findOrdersByVendorAndStatus(
+            String vendorName,
+            String status
+    ) {
+        return orderSummaryService
+                .getOrdersByVendorAndStatus(vendorName, status);
+    }
 }

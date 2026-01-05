@@ -43,4 +43,15 @@ public class OrderSummaryService {
         return summaryRepository.findById(storeId);
     }
 
+    public List<OrderSummary> getOrdersByVendorAndStatus(
+            String vendorName,
+            String status
+    ) {
+        if (vendorName == null || status == null) {
+            return List.of();
+        }
+        return summaryRepository
+                .findByVendorAndStatusIgnoreCase(vendorName, status);
+    }
+
 }

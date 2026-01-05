@@ -19,4 +19,15 @@ public interface OrderSummaryRepository extends MongoRepository<OrderSummary, St
     List<OrderSummary> findByStoreId(String storeId);
 
     Optional<OrderSummary> findById(String id);
+
+    @Query("""
+       {
+         'vendorName': { $regex: ?0, $options: 'i' },
+         'lastOrderStatus': { $regex: ?1, $options: 'i' }
+       }
+    """)
+    List<OrderSummary> findByVendorAndStatusIgnoreCase(
+            String vendorName,
+            String status
+    );
 }
