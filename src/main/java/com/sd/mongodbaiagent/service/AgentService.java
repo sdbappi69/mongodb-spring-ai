@@ -44,7 +44,7 @@ public class AgentService {
         - storeId: retail store ID
         - authorizedRetailerId: retailer authorization ID
         - shippingMethod: shipping method (Ground, Priority, etc.)
-        - lastOrderStatus: status of the order (ERROR, SUCCESS, PENDING)
+        - lastOrderStatus: status of the order (ERROR, CREATED, ORDER_APPROVED, etc.). All statuses other than ERROR are counted as successful orders.
         - lastVendorStatus: vendor system status
         - lastEvent: last workflow event (CREATE_PURCHASE_ORDER, etc.)
         - vendorAccountId: internal vendor account ID
