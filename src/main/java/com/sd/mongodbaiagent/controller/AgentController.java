@@ -1,6 +1,7 @@
 package com.sd.mongodbaiagent.controller;
 
 import com.sd.mongodbaiagent.service.AgentService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -14,12 +15,15 @@ public class AgentController {
     }
 
     @PostMapping("/chat")
-    public String chat(
+    public ResponseEntity<String> chat(
             @RequestHeader("X-Conversation-Id") String conversationId,
             @RequestBody String prompt
     ) {
-        return agentService.ask(conversationId, prompt);
+        return ResponseEntity.ok(
+                agentService.ask(conversationId, prompt)
+        );
     }
+
 }
 
 

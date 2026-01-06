@@ -14,6 +14,6 @@ public class Conversation {
     @Id
     private String id;
 
-    private List<Message> messages = new ArrayList<>();
+    private List<ConversationMessage> conversationMessages = new ArrayList<>();
 }
 

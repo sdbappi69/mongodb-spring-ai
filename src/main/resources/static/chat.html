@@ -2,64 +2,95 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>MongoDB + Spring AI Chat Demo</title>
+    <title>MongoDB + Spring AI Demo</title>
+
     <style>
         body {
             font-family: Arial, sans-serif;
-            background: #f4f6f8;
+            background: #f5f7fa;
             display: flex;
             justify-content: center;
-            padding: 40px;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
         }
+
         .chat-container {
-            width: 600px;
             background: white;
+            width: 420px;
+            height: 640px;
+            display: flex;
+            flex-direction: column;
             border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            padding: 16px;
         }
+
         h2 {
             text-align: center;
+            margin: 0 0 10px 0;
         }
+
+        .conversation {
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+
+        .conversation input {
+            margin-top: 4px;
+            width: 100%;
+            padding: 6px;
+            font-size: 12px;
+        }
+
         .messages {
-            height: 350px;
+            flex: 1;
             overflow-y: auto;
             border: 1px solid #ddd;
             padding: 10px;
             margin-bottom: 10px;
+            background: #fafafa;
         }
+
         .message {
-            margin-bottom: 10px;
+            margin-bottom: 8px;
+            font-size: 14px;
+            line-height: 1.4;
         }
-        .user {
+
+        .message.user {
             font-weight: bold;
-            color: #0b5ed7;
+            color: #1a73e8;
         }
-        .assistant {
-            color: #198754;
+
+        .message.assistant {
+            color: #202124;
         }
+
         textarea {
-            width: 100%;
+            resize: none;
             height: 60px;
             padding: 8px;
+            font-size: 14px;
+            margin-bottom: 8px;
         }
+
         button {
-            width: 100%;
             padding: 10px;
-            background: #0b5ed7;
+            background: #1a73e8;
             color: white;
             border: none;
-            cursor: pointer;
             border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
         }
+
         button:hover {
-            background: #084298;
-        }
-        .conversation {
-            margin-bottom: 10px;
+            background: #1558b0;
         }
     </style>
 </head>
+
 <body>
 
 <div class="chat-container">
@@ -67,13 +98,15 @@
 
     <div class="conversation">
         Conversation ID:
-        <input type="text" id="conversationId"
-               style="width: 100%; padding: 6px;">
+        <input type="text" id="conversationId" readonly>
     </div>
 
     <div class="messages" id="messages"></div>
 
-    <textarea id="userInput" placeholder="Ask a question..."></textarea>
+    <textarea id="userInput"
+              placeholder="Ask a question..."
+              onkeydown="handleKeyDown(event)"></textarea>
+
     <button onclick="sendMessage()">Send</button>
 </div>
 
@@ -81,7 +114,15 @@
     window.onload = function () {
         document.getElementById("conversationId").value =
             crypto.randomUUID();
+        document.getElementById("userInput").focus();
     };
+
+    function handleKeyDown(event) {
+        if (event.key === "Enter" && !event.shiftKey) {
+            event.preventDefault();
+            sendMessage();
+        }
+    }
 
     async function sendMessage() {
         const input = document.getElementById("userInput");
@@ -91,9 +132,8 @@
         const userText = input.value.trim();
         if (!userText) return;
 
-        // Show user message
         messages.innerHTML += `
-            <div class="message user">You: ${userText}</div>
+            <div class="message user">You: ${escapeHtml(userText)}</div>
         `;
         input.value = "";
         messages.scrollTop = messages.scrollHeight;
@@ -111,7 +151,7 @@
             const text = await response.text();
 
             messages.innerHTML += `
-                <div class="message assistant">AI: ${text}</div>
+                <div class="message assistant">AI: ${escapeHtml(text)}</div>
             `;
             messages.scrollTop = messages.scrollHeight;
 
@@ -122,6 +162,13 @@
                 </div>
             `;
         }
+    }
+
+    function escapeHtml(text) {
+        return text
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;");
     }
 </script>
 

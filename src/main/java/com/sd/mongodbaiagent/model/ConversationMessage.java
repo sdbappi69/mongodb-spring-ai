@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Message {
+public class ConversationMessage {
     private String role;    // "user" | "assistant"
     private String content;
 }

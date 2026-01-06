@@ -1,7 +1,7 @@
 package com.sd.mongodbaiagent.service;
 
 import com.sd.mongodbaiagent.model.Conversation;
-import com.sd.mongodbaiagent.model.Message;
+import com.sd.mongodbaiagent.model.ConversationMessage;
 import com.sd.mongodbaiagent.repository.ConversationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,13 +26,13 @@ public class ConversationService {
     }
 
     public void addUserMessage(Conversation conversation, String text) {
-        conversation.getMessages().add(new Message("user", text));
+        conversation.getConversationMessages().add(new ConversationMessage("user", text));
         trim(conversation);
         conversationRepository.save(conversation);
     }
 
     public void addAssistantMessage(Conversation conversation, String text) {
-        conversation.getMessages().add(new Message("assistant", text));
+        conversation.getConversationMessages().add(new ConversationMessage("assistant", text));
         trim(conversation);
         conversationRepository.save(conversation);
     }
@@ -42,7 +42,7 @@ public class ConversationService {
      * Oldest messages are removed first.
      */
     private void trim(Conversation conversation) {
-        var messages = conversation.getMessages();
+        var messages = conversation.getConversationMessages();
 
         if (messages.size() > MAX_MESSAGES) {
             int excess = messages.size() - MAX_MESSAGES;
