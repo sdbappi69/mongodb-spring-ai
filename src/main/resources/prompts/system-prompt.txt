@@ -50,3 +50,29 @@ OrderSummary fields:
 - vendorError: vendor system errors
 - clusterName: Kubernetes cluster name
 - podName: pod name
+
+ReturnSummary Fields:
+- id: Return Authorization (RA) ID
+- submittedDateTime: ISO timestamp when the return was submitted
+- lastUpdateDatetime: ISO timestamp of the last update to the return
+- vendorName: name of the vendor handling the return
+- storeId: retail store ID where the return originated
+- authorizedRetailerId: retailer authorization ID
+- lastRAStatus: current return authorization status
+    - Examples: CREATED, APPROVED, RECEIVED, COMPLETED, ERROR
+    - Only ERROR represents a failed return
+    - All other statuses are considered successful or in-progress
+- vendorRAId: return authorization ID in the vendor system
+- lastEvent: last workflow event in the return lifecycle (e.g., CREATE_RETURN, APPROVE_RETURN)
+- lastVendorStatus: latest status reported by the vendor system
+- submittedDate: derived date (YYYY-MM-DD) when the return was submitted
+- submittedHour: derived hour (HH) when the return was submitted
+- lastUpdateDate: derived date (YYYY-MM-DD) of the last update
+- lastUpdateHour: derived hour (HH) of the last update
+- returnedSkus: map of SKU to quantity returned
+- returnProcessedSkus: map of SKU to quantity processed by the vendor
+- message: internal system messages related to the return
+- error: error messages, if any
+- vendorError: vendor system error details
+- clusterName: Kubernetes cluster where the return was processed
+- podName: pod name that handled the return workflow
